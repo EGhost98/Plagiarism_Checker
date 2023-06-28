@@ -1,58 +1,58 @@
-body{
+body {
     /* overflow: hidden;
     overflow-x: hidden;
     overflow-y: scroll; */
-    font-family: 'Roboto Mono', monospace;
+    font-family: "Roboto Mono", monospace;
     background-color: rgb(227, 242, 255);
 }
 
 .navbar-brand {
-    font-family: 'Sansita Swashed', cursive; 
-    font-size: 26px; 
+    font-family: "Sansita Swashed", cursive;
+    font-size: 26px;
     margin-right: 40px;
 }
 
-.navbar-nav{
-    font-size: 20px;     
+.navbar-nav {
+    font-size: 20px;
 }
 
-.navbar-nav li :hover{
-    color: #2a9d8f;    
+.navbar-nav li:hover {
+    color: #2a9d8f;
     border-bottom: 2px solid #2a9d8f;
 }
 
-.nav-two{
+.nav-two {
     margin-left: 40px;
 }
 
-.content-1{
+.content-1 {
     margin-top: 10px;
 }
 
-h1{
+h1 {
     text-align: center;
 }
 
-.text-content{
+.text-content {
     text-align: center;
     margin: auto;
     align-items: center;
 }
 
-.tab-content-2{
+.tab-content-2 {
     height: 450px;
-    border: 2px solid rgb(131, 130, 130);
+    border: 2px solid #99539C;
     border-radius: 4px;
     padding: 3px;
     margin: auto;
     background-color: white;
 }
 
-form{
+form {
     padding-top: 20px;
 }
 
-textarea{
+textarea {
     width: 90%;
     height: 170px;
 }
@@ -63,14 +63,14 @@ textarea{
 
 #submit-button-1 {
     margin-left: 100px;
-    background-color: #2a9d8f; 
+    background-color: #99539c;
     color: white;
 }
 
-#submit-button-2{
+#submit-button-2 {
     margin-left: 400px;
-    background-color: #2a9d8f; 
-    color: white;   
+    background-color: #99539c;
+    color: white;
 }
 
 #output {
@@ -82,13 +82,13 @@ textarea{
     color: black;
 }
 
-.button-align{
+.button-align {
     text-align: center;
     align-items: center;
     margin-left: 100px;
 }
 
-.output-per{
+.output-per {
     font-size: 35px;
     color: #264653;
     padding-top: 43px;
