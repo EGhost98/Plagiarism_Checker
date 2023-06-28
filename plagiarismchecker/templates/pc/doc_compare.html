@@ -21,8 +21,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@700&display=swap" rel="stylesheet">
     <link href="{% static 'pc/stylesDocCheck.css' %}" rel="stylesheet" type="text/css">
     <style>
-        body{
-            background-color: rgb(227, 242, 255);
+        body {
+            background-image: url("{% static 'pc/background.jpg' %}");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
     </style>
 </head>
@@ -50,7 +54,7 @@
     <div class="container content-1">
         <div class="text-content">
 
-            <p>Choose two files to compare or enter contents to compare!</p>
+            <h2>Choose two files to compare or enter contents to compare!</h2>
             <div class="row">
                 <div class="col-md-5 tab-content-2">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">

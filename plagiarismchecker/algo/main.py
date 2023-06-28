@@ -1,6 +1,5 @@
-
 from nltk.corpus import stopwords
-from plagiarismchecker.algorithm import webSearch
+from plagiarismchecker.algo import webSearch
 import sys
 import re
 

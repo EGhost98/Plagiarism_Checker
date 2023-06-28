@@ -1,9 +1,5 @@
-from plagiarismchecker.algorithm import ConsineSim
+from plagiarismchecker.algo import ConsineSim
 from apiclient.discovery import build
-
-# searchEngine_API = 'AIzaSyAoEYif8sqEYvj1P6vYLw6CGMrQbDMmaq8'
-# searchEngine_API = 'AIzaSyCUYy9AtdMUddiNA0gOcsGPQcE372ytyCw'
-# searchEngine_API = 'AIzaSyAQYLRBBeDQNxADPQtUnApntz78-urWEZI'
 searchEngine_API = 'AIzaSyCAeR7_6TTKzoJmSwmOuHZvKcVg_lhqvCc'
 searchEngine_Id = '758ad3e78879f0e08'
 
@@ -11,11 +7,9 @@ def searchWeb(text, output, c):
     text = text
     # print(text)
     try:
-        resource = build("customsearch", 'v1',
-                         developerKey=searchEngine_API).cse()
+        resource = build("customsearch", 'v1',developerKey=searchEngine_API).cse()
         result = resource.list(q=text, cx=searchEngine_Id).execute()
         searchInfo = result['searchInformation']
-        # print(searchInfo)
         if(int(searchInfo['totalResults']) > 0):
             maxSim = 0
             itemLink = ''
@@ -35,8 +29,7 @@ def searchWeb(text, output, c):
             if itemLink in output:
                 print('if', maxSim)
                 output[itemLink] = output[itemLink] + 1
-                c[itemLink] = ((c[itemLink] *
-                                (output[itemLink]-1) + maxSim)/(output[itemLink]))
+                c[itemLink] = ((c[itemLink] *(output[itemLink]-1) + maxSim)/(output[itemLink]))
             else:
                 print('else', maxSim)
                 print(text)
