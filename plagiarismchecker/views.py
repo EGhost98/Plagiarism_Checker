@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from plagiarismchecker.algo import main
 from docx import *
 from plagiarismchecker.algo import fileSimilarity
@@ -27,8 +26,7 @@ def filetest(request):
             value += para.text
     elif str(request.FILES['docfile']).endswith(".pdf"):
         pdfFileObj = open(request.FILES['docfile'], 'rb') 
-        pdfReader = PyPDF2.PdfFileReader(pdfFileObj) 
-        pageObj = pdfReader.getPage(0) 
+        pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
         pdfFileObj.close() 
     percent,link = main.findSimilarity(value)
     return render(request, 'pc/index.html',{'link': link, 'percent': percent})

@@ -1,44 +1,36 @@
 from plagiarismchecker.algo import ConsineSim
-from apiclient.discovery import build
-searchEngine_API = 'AIzaSyCAeR7_6TTKzoJmSwmOuHZvKcVg_lhqvCc'
-searchEngine_Id = '758ad3e78879f0e08'
+from googleapiclient.discovery import build
+searchEngine_API = 'AIzaSyCYnJJY9sfBp7n1AD2MPLWqp-EHsoNRNf0'
+searchEngine_Id = 'e7907aab111c04688'
 
 def searchWeb(text, output, c):
     text = text
-    # print(text)
     try:
-        resource = build("customsearch", 'v1',developerKey=searchEngine_API).cse()
-        result = resource.list(q=text, cx=searchEngine_Id).execute()
+        res = build("customsearch", 'v1',developerKey=searchEngine_API).cse()
+        result = res.list(q=text, cx=searchEngine_Id).execute()
         searchInfo = result['searchInformation']
         if(int(searchInfo['totalResults']) > 0):
-            maxSim = 0
-            itemLink = ''
-            numList = len(result['items']) 
-            if numList >= 5:
-                numList = 5
-            for i in range(0, numList):
+            Max_Sim = 0
+            Max_Sim_Link = ''
+            Num_Items = len(result['items']) 
+            if Num_Items >= 5:
+                Num_Items = 5
+            for i in range(0, Num_Items):
                 item = result['items'][i]
-                content = item['snippet']
-                simValue = ConsineSim.cosineSim(text, content)
-                if simValue > maxSim:
-                    maxSim = simValue
-                    itemLink = item['link']
+                Item_content = item['snippet']
+                Sim_Value = ConsineSim.cosineSim(text, Item_content)
+                if Sim_Value > Max_Sim:
+                    Max_Sim = Sim_Value
+                    Max_Sim_Link = item['link']
                 if item['link'] in output:
-                    itemLink = item['link']
+                    Max_Sim_Link = item['link']
                     break
-            if itemLink in output:
-                print('if', maxSim)
-                output[itemLink] = output[itemLink] + 1
-                c[itemLink] = ((c[itemLink] *(output[itemLink]-1) + maxSim)/(output[itemLink]))
+            if Max_Sim_Link in output:
+                output[Max_Sim_Link] = output[Max_Sim_Link] + 1
+                c[Max_Sim_Link] = ((c[Max_Sim_Link] *(output[Max_Sim_Link]-1) + Max_Sim)/(output[Max_Sim_Link]))
             else:
-                print('else', maxSim)
-                print(text)
-                print(itemLink)
-                output[itemLink] = 1
-                c[itemLink] = maxSim
+                output[Max_Sim_Link] = 1
+                c[Max_Sim_Link] = Max_Sim
     except Exception as e:
-        print(text)
-        print(e)
-        print('error')
         return output, c, 1
     return output, c, 0

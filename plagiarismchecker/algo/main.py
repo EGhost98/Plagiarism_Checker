@@ -42,7 +42,6 @@ def findSimilarity(text):
     # n-grams N VALUE SET HERE
     n = 9
     queries = getQueries(text, n)
-    print('GetQueries task complete')
     q = [' '.join(d) for d in queries]
     output = {}
     c = {}
@@ -55,14 +54,11 @@ def findSimilarity(text):
     numqueries = count
     for s in q[0:count]:
         output, c, errorCount = webSearch.searchWeb(s, output, c)
-        print('Web search task complete')
         numqueries = numqueries - errorCount
-        # print(output,c)
         sys.stdout.flush()
         i = i+1
     totalPercent = 0
     outputLink = {}
-    print(output, c)
     prevlink = ''
     for link in output:
         percentage = (output[link]*c[link]*100)/numqueries
@@ -75,9 +71,4 @@ def findSimilarity(text):
             outputLink[prevlink] = outputLink[prevlink] + percentage
         elif c[link] == 1:
             totalPercent = totalPercent + percentage
-        print(link, totalPercent)
-
-    print(count, numqueries)
-    print(totalPercent, outputLink)
-    print("\nDone!")
     return totalPercent, outputLink
