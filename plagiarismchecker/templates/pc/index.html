@@ -173,7 +173,6 @@ progress {
                     </form>
     
                     <div class="col-md-12 searchbox d-flex justify-content-center align-items-center">
-                     
                       <button type="submit" form="form2-ws" id="submit-button-2" class="btn submit-button-2 m-0 visible">Run Search</button>  
                       </div> 
                 </div>
@@ -181,7 +180,7 @@ progress {
             </div>    
           </div>
     
-          {% comment %} {% if link %} {% endcomment %}
+          {% if link %}
           <div class="container-fluid result-div">
             <div class="row">         
               <div class="col-md-3 result-2 progress-bar-container pt-0">
@@ -204,7 +203,7 @@ progress {
                   </div>
             </div>
           </div>
-          {% comment %} {% endif %} {% endcomment %}
+          {% endif %}
         </div>   
       </div>
   </div>
