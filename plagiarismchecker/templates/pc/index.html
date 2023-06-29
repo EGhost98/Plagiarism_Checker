@@ -181,7 +181,7 @@ progress {
             </div>    
           </div>
     
-          {% if link %}
+          {% comment %} {% if link %} {% endcomment %}
           <div class="container-fluid result-div">
             <div class="row">         
               <div class="col-md-3 result-2 progress-bar-container pt-0">
@@ -195,25 +195,16 @@ progress {
                       
     
               <div class="col-md-8 offset-1 result-1 card">
-               
                   <h3 class="card-header bg-dark text-light">Results</h3>
                   <div class="card-body">
                     <ul class="output-list-1">
                       {% for links in link %}            
                         <li><a href="{{ links }}" target ="_blank"> {{ links }}</a></li>
                       {% endfor %}
-                     
                   </div>
-               
-            </div>
-      
-            <!-- <div class="col-md-6 result-2 p-0" style="text-align: center; align-items: center;">
-              <p class="output-per-tot">{{ percent }}%</p>
-              <p>Plagiarized</p>
-            </div> -->
             </div>
           </div>
-          {% endif %}
+          {% comment %} {% endif %} {% endcomment %}
         </div>   
       </div>
   </div>
