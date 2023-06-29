@@ -3,7 +3,10 @@
 Plagiarism Checker is a Django-based web application that allows users to check for plagiarism in text documents. It utilizes various algorithms and techniques to compare and analyze text similarity.
 
 ## Screenshots 
-![image](https://github.com/EGhost98/Plagiarism_Checker/assets/76267623/ba072777-432f-4fa6-aad0-2790dbc6b42f)
+
+![Screenshot 2023-06-30 043001](https://github.com/EGhost98/Plagiarism_Checker/assets/76267623/e2ef9b22-a951-40c1-8fda-4c9e2637ecbe)
+![image](https://github.com/EGhost98/Plagiarism_Checker/assets/76267623/d5e5fee6-e7b9-4a49-b90a-a27f9843e30e)
+
 
 ## How to Run the Project
 To run the project, follow these steps:
