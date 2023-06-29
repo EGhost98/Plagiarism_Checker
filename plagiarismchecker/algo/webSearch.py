@@ -1,7 +1,7 @@
 from plagiarismchecker.algo import ConsineSim
 from googleapiclient.discovery import build
-searchEngine_API = 'AIzaSyCYnJJY9sfBp7n1AD2MPLWqp-EHsoNRNf0'
-searchEngine_Id = 'e7907aab111c04688'
+searchEngine_API = 'AIzaSyCAeR7_6TTKzoJmSwmOuHZvKcVg_lhqvCc'
+searchEngine_Id = '758ad3e78879f0e08'
 
 def searchWeb(text, output, c):
     text = text
