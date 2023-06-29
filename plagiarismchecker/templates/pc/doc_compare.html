@@ -1,119 +1,339 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Plagiarism Checker | Compare Document</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plagiarism Checker | Compare Document</title>
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+        <!-- Google Fonts -->
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+        <!-- Bootstrap core CSS -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+            rel="stylesheet" />
+        <!-- Material Design Bootstrap -->
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css"
+            rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;600&display=swap"
+            rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@700&display=swap"
+            rel="stylesheet" />
+        <link
+            href="{% static 'pc/stylesDocCheck.css' %}"
+            rel="stylesheet"
+            type="text/css" />
+        <style>
+            body {
+                background-image: url("{% static 'pc/background.jpg' %}");
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+            }
+            textarea {
+                resize: none;
+                min-height: 170px;
+            }
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Material Design Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@700&display=swap" rel="stylesheet">
-    <link href="{% static 'pc/stylesDocCheck.css' %}" rel="stylesheet" type="text/css">
-    <style>
-        body {
-            background-image: url("{% static 'pc/background.jpg' %}");
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-    </style>
-</head>
+            .searchbox {
+                margin-top: 166px;
+            }
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
-        <a class="navbar-brand" href="{% url 'plagiarism-check-mainpage' %}">Plagiarism Checker</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav" style="margin-left: 0;">
-                <li class="nav-item nav-one">
-                    <a class="nav-link" href="{% url 'plagiarism-check-mainpage' %}">Home <span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item nav-two">
-                    <a class="nav-link" href="{% url 'compare' %}">Compare Documents</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+            .result-div {
+                margin-top: 100px;
+            }
 
-    <div class="container content-1">
-        <div class="text-content">
+            :root {
+                --progress-value: 0;
+            }
 
-            <h2>Choose two files to compare or enter contents to compare!</h2>
-            <div class="row">
-                <div class="col-md-5 tab-content-2">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="text-tab-2" data-toggle="tab" href="#text-input-dc-1" role="tab"
-                                aria-controls="text-input-ws" aria-selected="true">Text</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="text-input-dc-1" role="tabpanel"
-                            aria-labelledby="text-tab-2">
-                            <form id="form1-ws" action="/twofiletest1/" method="POST">
-                                {% csrf_token %}
-                                <textarea id="text-in-1" name="q1" required></textarea><br>
-                                <textarea id="text-1" name="q2" required></textarea>
-                            </form>
-                        </div>
-                    </div>
+            .progress-bar-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .progress-bar {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+
+                /* to center the percentage value */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .progress-bar::before {
+                counter-reset: percentage var(--progress-value);
+                content: counter(percentage) "%";
+                color: black;
+            }
+
+            .html {
+                background: radial-gradient(
+                        closest-side,
+                        white 79%,
+                        transparent 80% 100%
+                    ),
+                    conic-gradient(
+                        hotpink calc(var(--progress-value) * 1%),
+                        pink 0
+                    );
+                animation: html-progress 2s 1 forwards;
+            }
+
+            .html::before {
+                animation: html-progress 2s 1 forwards;
+            }
+
+            h2 {
+                text-align: center;
+            }
+
+            progress {
+                visibility: hidden;
+                width: 0;
+                height: 0;
+            }
+
+            .result-1 {
+                background-color: white;
+                border: 2px solid purple;
+                padding: 0;
+            }
+
+            .ok2 {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+            <a class="navbar-brand" href="{% url 'plagiarism-check-mainpage' %}"
+                >Plagiarism Checker</a
+            >
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav" style="margin-left: 0">
+                    <li class="nav-item nav-one">
+                        <a
+                            class="nav-link"
+                            href="{% url 'plagiarism-check-mainpage' %}"
+                            >Home <span class="sr-only">(current)</span></a
+                        >
+                    </li>
+                    <li class="nav-item nav-two">
+                        <a class="nav-link" href="{% url 'compare' %}"
+                            >Compare Documents</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container content-1">
+            <div class="card mt-3 mb-4 ok2">
+                <div
+                    class="card-header text-center py-3 bg-dark text-white custom-header">
+                    <h2 class="fadeInUp custom-title">
+                        Choose two files to compare or enter contents to compare!
+                    </h2>
                 </div>
-                <div class="col-md-5 tab-content-2">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="file-tab-3" data-toggle="tab" href="#file-input-dc-2" role="tab"
-                                aria-controls="file-input-ws" aria-selected="true">File Upload</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="file-input-dc-2" role="tabpanel" aria-labelledby="file-tab-3">
-                            <form id="form2-ws" action="/twofilecompare1/" enctype="multipart/form-data" method="POST">
-                                {% csrf_token %}
-                                <input type="file" class="fileupload" id="fileupload" name="docfile1" required="True">
-                                <input type="file" class="fileupload" id="fileupload" name="docfile2" required="True">
-                            </form>
+                <div class="px-3 py-3">
+                    <div class="text-content">
+                        <div class="row">
+                            <div class="col-md-5 tab-content-2 bg-light px-2">
+                                <ul
+                                    class="nav nav-tabs"
+                                    id="myTab"
+                                    role="tablist">
+                                    <li class="nav-item">
+                                        <a
+                                            class="nav-link active bg-light border-0"
+                                            id="text-tab-2"
+                                            data-toggle="tab"
+                                            href="#text-input-dc-1"
+                                            role="tab"
+                                            aria-controls="text-input-ws"
+                                            aria-selected="true"
+                                            >Text</a
+                                        >
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div
+                                        class="tab-pane fade show active"
+                                        id="text-input-dc-1"
+                                        role="tabpanel"
+                                        aria-labelledby="text-tab-2">
+                                        <form
+                                            id="form1-ws"
+                                            action="/twofiletest1/"
+                                            method="POST"
+                                            class="form-floating">
+                                            {% csrf_token %}
+                                            <textarea
+                                                id="text-in-1"
+                                                name="q1"
+                                                class="form-control"
+                                                required></textarea
+                                            ><br />
+                                            <textarea
+                                                id="text-1"
+                                                name="q2"
+                                                class="form-control"
+                                                required></textarea>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 tab-content-2 bg-light px-2">
+                                <ul
+                                    class="nav nav-tabs"
+                                    id="myTab"
+                                    role="tablist">
+                                    <li class="nav-item">
+                                        <a
+                                            class="nav-link active bg-light border-0"
+                                            id="file-tab-3"
+                                            data-toggle="tab"
+                                            href="#file-input-dc-2"
+                                            role="tab"
+                                            aria-controls="file-input-ws"
+                                            aria-selected="true"
+                                            >File Upload</a
+                                        >
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div
+                                        class="tab-pane fade show active"
+                                        id="file-input-dc-2"
+                                        role="tabpanel"
+                                        aria-labelledby="file-tab-3">
+                                        <form
+                                            id="form2-ws w-100"
+                                            action="/twofilecompare1/"
+                                            enctype="multipart/form-data"
+                                            method="POST">
+                                            {% csrf_token %}
+                                            <div style="margin-bottom: 160px">
+                                                <input
+                                                    type="file"
+                                                    class="fileupload"
+                                                    id="fileupload"
+                                                    name="docfile1"
+                                                    required="True" />
+                                            </div>
+                                            <div>
+                                                <input
+                                                    type="file"
+                                                    class="fileupload"
+                                                    id="fileupload"
+                                                    name="docfile2"
+                                                    required="True" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-6 mt-3">
+                                <button
+                                    type="submit"
+                                    form="form1-ws"
+                                    id="submit-button-1"
+                                    class="btn m-0">
+                                    Compare The Texts
+                                </button>
+                            </div>
+                            <div class="col-6 mt-3">
+                                <button
+                                    type="submit"
+                                    form="form2-ws"
+                                    id="submit-button-2"
+                                    class="btn submit-button-2 m-0">
+                                    Compare The Files
+                                </button>
+                            </div>
+                        </div>
+                        {% if result %}
+                        <div
+                            class="col-md-12 result-2 progress-bar-container pt-0">
+                            <h4>
+                                <label for="html">Plagiarism</label>
+                            </h4>
+                            <div class="progress-bar html">
+                                <progress
+                                    id="html"
+                                    min="0"
+                                    max="100"
+                                    value="0"></progress>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            
-            <div class="row button-align">
-                <button type="submit" form="form1-ws" id="submit-button-1" class="btn">Compare The Texts</button>
-                <button type="submit" form="form2-ws" id="submit-button-2" class="btn submit-button-2">Compare The Files</button>
-            </div>
-            <ul style="text-align: center;margin-left: 450px;">
-                <li class="output-per" style="list-style:none">{{ result }}%</li>
-            </ul>
-
         </div>
-    </div>
 
-    <!-- JQuery -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Bootstrap tooltips -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
-</body>
+        <script>
+               // Update the progress bar based on the resultPercent value
+               function updateProgressBar(resultPercent) {
+              const progressBar = document.querySelector('.progress-bar');
+              const progressElement = document.getElementById('html');
+              resultPercent=Math.floor(resultPercent);
+              progressBar.style.setProperty('--progress-value', resultPercent);
+              progressElement.value = resultPercent;
+
+            }
+
+            // Example usage
+               const resultPercent = {{result}};
+               updateProgressBar(resultPercent);
+        </script>
+
+        <!-- JQuery -->
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Bootstrap tooltips -->
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+        <!-- MDB core JavaScript -->
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+    </body>
 </html>

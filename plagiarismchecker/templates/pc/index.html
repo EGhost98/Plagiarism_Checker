@@ -28,6 +28,81 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
+
+    #text-1{
+      resize: none;
+      min-height: 220px;
+    }
+    
+   
+
+    .searchbox{
+      margin-top: 190px;
+    }
+
+    .result-div{
+      margin-top: 100px;
+    }
+    
+    :root {
+  --progress-value: 0;
+}
+
+
+
+.progress-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-bar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+
+  /* to center the percentage value */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-bar::before {
+  counter-reset: percentage var(--progress-value);
+  content: counter(percentage) '%';
+  color:black
+}
+
+.html {
+  background: radial-gradient(closest-side, white 79%, transparent 80% 100%),
+    conic-gradient(hotpink calc(var(--progress-value) * 1%), pink 0);
+  animation: html-progress 2s 1 forwards;
+}
+
+.html::before {
+  animation: html-progress 2s 1 forwards;
+}
+
+h2 {
+  text-align: center;
+}
+
+progress {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+.result-1{
+  background-color: white;
+  border: 2px solid purple;
+  padding:0;
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -49,73 +124,116 @@
       </ul>
     </div>
   </nav>
-  <div class="container content-1">
-    <div class="col-md-6 offset-3 text-content">
-      <h2>Choose a file or enter text for web search!</h2>
-      <div class="tab-content-1">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text-input-ws" role="tab"
-              aria-controls="text-input-ws" aria-selected="true" onclick="makeInvisible()">Text</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="file-tab" data-toggle="tab" href="#file-input-ws" role="tab"
-              aria-controls="file-input-ws" aria-selected="false" onclick="makeVisible()">File Upload</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="text-input-ws" role="tabpanel" aria-labelledby="text-tab">
-            <form id="form1-ws" action="/test/" method="POST">
-              {% csrf_token %}
-              <textarea id="text-1" name="q" required></textarea>
-                </form>
 
+
+  <div class="container content-1 d-flex justify-content-center">
+    <div class="card mt-3 mb-4">
+      <div class="card-header text-center py-3 bg-dark text-white custom-header">
+          <h2 class="fadeInUp custom-title">Choose a file or enter text for web search!</h2>
+      </div>
+      <div class="px-3 py-3">
+        <div class="col-md-10  text-content ml-5">
+          <div class="container-search d-flexbox justify-content-center align-items-center">
+            <div class="tab-content-1 p-3">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="text-tab" data-toggle="tab" href="#text-input-ws" role="tab"
+                    aria-controls="text-input-ws" aria-selected="true" onclick="makeInvisible()">Text</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="file-tab" data-toggle="tab" href="#file-input-ws" role="tab"
+                    aria-controls="file-input-ws" aria-selected="false" onclick="makeVisible()">File Upload</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active d-flexbox justify-content-center align-items-center" id="text-input-ws" role="tabpanel" aria-labelledby="text-tab">
+                  <form id="form1-ws" action="/test/" method="POST" class="pt-0 form-floating">
+                    {% csrf_token %}
+                    <div class=" mt-1">
+                      <textarea id="text-1" name="q" class="form-control  rounded-bottom" placeholder="Enter Your Text Here" required></textarea>    
+                    </div>
+                    
+                  </form>
+                      <div class="col-md-12 mt-5">
+                        <button type="submit" form="form1-ws" id="submit-button-1" class="btn m-0">Run Search</button>
+              
+                        </div> 
+                </div>          
+                <div class="tab-pane fade p-4 d-flexbox justify-content-center align-items-center" id="file-input-ws" role="tabpanel" aria-labelledby="file-tab">
+                  <form id="form2-ws" action="/filetest/" enctype="multipart/form-data" method="POST">
+                  {% csrf_token %}
+                  <input id="id_docfile" required type="file" class="form-control border-0" name="docfile" />
+                    </form>
+    
+                    <div class="col-md-12 searchbox d-flex justify-content-center align-items-center">
+                     
+                      <button type="submit" form="form2-ws" id="submit-button-2" class="btn submit-button-2 m-0 visible">Run Search</button>  
+                      </div> 
+                </div>
+              </div>
+            </div>    
           </div>
-          
-          <div class="tab-pane fade" id="file-input-ws" role="tabpanel" aria-labelledby="file-tab">
-            <form id="form2-ws" action="/filetest/" enctype="multipart/form-data" method="POST">
-            {% csrf_token %}
-            <input id="id_docfile" required type="file" name="docfile" />
-              </form>
-
+    
+          {% if link %}
+          <div class="container-fluid result-div">
+            <div class="row">         
+              <div class="col-md-3 result-2 progress-bar-container pt-0">
+                <h4>
+                  <label for="html">Plagiarism</label>
+                </h4>
+                <div class="progress-bar html">
+                  <progress id="html" min="0" max="100" value="60"></progress>
+                </div>
+              </div>
+                      
+    
+              <div class="col-md-8 offset-1 result-1 card">
+               
+                  <h3 class="card-header bg-dark text-light">Results</h3>
+                  <div class="card-body">
+                    <ul class="output-list-1">
+                      {% for links in link %}            
+                        <li><a href="{{ links }}" target ="_blank"> {{ links }}</a></li>
+                      {% endfor %}
+                     
+                  </div>
+               
+            </div>
+      
+            <!-- <div class="col-md-6 result-2 p-0" style="text-align: center; align-items: center;">
+              <p class="output-per-tot">{{ percent }}%</p>
+              <p>Plagiarized</p>
+            </div> -->
+            </div>
           </div>
-        </div>
+          {% endif %}
+        </div>   
       </div>
-      <div class="col-md-9">
-      <button type="submit" form="form1-ws" id="submit-button-1" class="btn">Run Search</button>
-      <button type="submit" form="form2-ws" id="submit-button-2" class="btn submit-button-2">Run Search</button>  
-      </div>  
-    </div>
+  </div>
 
-    <div class="container-fluid result-div">
-      <div class="row">
-        <div class="col-md-6 result-1">
-          <h3>Results</h3>
-          <ul class="output-list-1">
-            {% for links in link %}            
-              <li>{{ links }}</li>
-            {% endfor %}
-      </div>
+    
 
-      <div class="col-md-6 result-2" style="text-align: center; align-items: center;">
-        <p class="output-per-tot">{{ percent }}%</p>
-        <p>Plagiarized</p>
-      </div>
-      </div>
-    </div>
+    
   </div>
 
   <script>
-    function makeVisible() {
-      document.getElementById("submit-button-2").style.visibility = "visible";
-      document.getElementById("submit-button-1").style.visibility = "hidden";
-    }
+   // Update the progress bar based on the resultPercent value
+  function updateProgressBar(resultPercent) {
+  const progressBar = document.querySelector('.progress-bar');
+  const progressElement = document.getElementById('html');
+  resultPercent=Math.floor(resultPercent);
+  progressBar.style.setProperty('--progress-value', resultPercent);
+  progressElement.value = resultPercent;
+  
+}
 
-    function makeInvisible(){
-      document.getElementById("submit-button-2").style.visibility = "hidden";
-      document.getElementById("submit-button-1").style.visibility = "visible";
-    }
+// Example usage
+   const resultPercent = {{ percent }};
+   updateProgressBar(resultPercent);
+
+
   </script>
+  
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
   <!-- JQuery -->
