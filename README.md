@@ -6,7 +6,7 @@ Plagiarism Checker is a Django-based web application that allows users to check 
 To run the project, follow these steps:
 
 1. Clone the repository: `git clone <repository_url>`
-2. Navigate to the project directory: `cd Chibi_URL`
+2. Navigate to the project directory: `cd Plagiarism_Checker`
 3. Install the dependencies: `pip install -r requirements.txt`
 4. Run the application: `python manage.py runserver`
 5. Access the application in your web browser at: `http://localhost:8000`
